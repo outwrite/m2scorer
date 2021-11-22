@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # This file is part of the NUS M2 scorer.
 # The NUS M2 scorer is free software: you can redistribute it and/or modify
@@ -15,17 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # file: token_offsets.py
-# convert character to token offsets, tokenize sentence 
+# convert character to token offsets, tokenize sentence
 #
 # usage: %prog  < input > output
 #
 
 
+from __future__ import print_function
 import sys
-import re
-import os
-from util import *
-from Tokenizer import PTBTokenizer
+from m2scorer.util import *
+from m2scorer.Tokenizer import PTBTokenizer
 
 
 assert len(sys.argv) == 1
@@ -34,15 +33,15 @@ assert len(sys.argv) == 1
 # main
 # loop over sentences cum annotation
 tokenizer = PTBTokenizer()
-sentence = ''
+sentence = ""
 for line in sys.stdin:
     line = line.decode("utf8").strip()
     if line.startswith("S "):
         sentence = line[2:]
-        sentence_tok = "S " + ' '.join(tokenizer.tokenize(sentence))
-        print sentence_tok.encode("utf8")
+        sentence_tok = "S " + " ".join(tokenizer.tokenize(sentence))
+        print(sentence_tok.encode("utf8"))
     elif line.startswith("A "):
-        fields = line[2:].split('|||')
+        fields = line[2:].split("|||")
         start_end = fields[0]
         char_start, char_end = [int(a) for a in start_end.split()]
         # calculate token offsets
@@ -53,10 +52,11 @@ for line in sys.stdin:
         start_end = str(tok_start) + " " + str(tok_end)
         fields[0] = start_end
         # tokenize corrections, remove trailing whitespace
-        corrections = [(' '.join(tokenizer.tokenize(c))).strip() for c in fields[2].split('||')]
-        fields[2] = '||'.join(corrections)
-        annotation =  "A " + '|||'.join(fields)
-        print annotation.encode("utf8")
+        corrections = [
+            (" ".join(tokenizer.tokenize(c))).strip() for c in fields[2].split("||")
+        ]
+        fields[2] = "||".join(corrections)
+        annotation = "A " + "|||".join(fields)
+        print(annotation.encode("utf8"))
     else:
-        print line.encode("utf8")
-
+        print(line.encode("utf8"))

@@ -20,31 +20,38 @@ import random
 import math
 import re
 
-def smart_open(fname, mode = 'r'):
-    if fname.endswith('.gz'):
+
+def smart_open(fname, mode="rb"):
+    if fname.endswith(".gz"):
         import gzip
-        # Using max compression (9) by default seems to be slow.                                
-        # Let's try using the fastest.                                                          
+
+        # Using max compression (9) by default seems to be slow.
+        # Let's try using the fastest.
         return gzip.open(fname, mode, 1)
     else:
         return open(fname, mode)
 
 
 def randint(b, a=0):
-    return random.randint(a,b)
+    return random.randint(a, b)
+
 
 def uniq(seq, idfun=None):
-    # order preserving                                                                          
+    # order preserving
     if idfun is None:
-        def idfun(x): return x
+
+        def idfun(x):
+            return x
+
     seen = {}
     result = []
     for item in seq:
         marker = idfun(item)
-        # in old Python versions:                                                               
-        # if seen.has_key(marker)                                                               
-        # but in new ones:                                                                      
-        if marker in seen: continue
+        # in old Python versions:
+        # if seen.has_key(marker)
+        # but in new ones:
+        if marker in seen:
+            continue
         seen[marker] = 1
         result.append(item)
     return result
@@ -52,28 +59,30 @@ def uniq(seq, idfun=None):
 
 def sort_dict(myDict, byValue=False, reverse=False):
     if byValue:
-        items = myDict.items()
-        items.sort(key = operator.itemgetter(1), reverse=reverse)
+        items = list(myDict.items())
+        items.sort(key=operator.itemgetter(1), reverse=reverse)
     else:
         items = sorted(myDict.items())
     return items
 
+
 def max_dict(myDict, byValue=False):
     if byValue:
-        skey=lambda x:x[1]
+        skey = lambda x: x[1]
     else:
-        skey=lambda x:x[0]
-    return max(myDict.items(), key=skey)
+        skey = lambda x: x[0]
+    return max(list(myDict.items()), key=skey)
 
 
 def min_dict(myDict, byValue=False):
     if byValue:
-        skey=lambda x:x[1]
+        skey = lambda x: x[1]
     else:
-        skey=lambda x:x[0]
-    return min(myDict.items(), key=skey)
+        skey = lambda x: x[0]
+    return min(list(myDict.items()), key=skey)
 
-def paragraphs(lines, is_separator=lambda x : x == '\n', joiner=''.join):
+
+def paragraphs(lines, is_separator=lambda x: x == "\n", joiner="".join):
     paragraph = []
     for line in lines:
         if is_separator(line):
@@ -90,7 +99,7 @@ def isASCII(word):
     try:
         word = word.decode("ascii")
         return True
-    except UnicodeEncodeError :
+    except UnicodeEncodeError:
         return False
     except UnicodeDecodeError:
         return False
@@ -100,66 +109,71 @@ def intersect(x, y):
     return [z for z in x if z in y]
 
 
-
 # Mapping Windows CP1252 Gremlins to Unicode
 # from http://effbot.org/zone/unicode-gremlins.htm
 cp1252 = {
     # from http://www.microsoft.com/typography/unicode/1252.htm
-    u"\x80": u"\u20AC", # EURO SIGN
-    u"\x82": u"\u201A", # SINGLE LOW-9 QUOTATION MARK
-    u"\x83": u"\u0192", # LATIN SMALL LETTER F WITH HOOK
-    u"\x84": u"\u201E", # DOUBLE LOW-9 QUOTATION MARK
-    u"\x85": u"\u2026", # HORIZONTAL ELLIPSIS
-    u"\x86": u"\u2020", # DAGGER
-    u"\x87": u"\u2021", # DOUBLE DAGGER
-    u"\x88": u"\u02C6", # MODIFIER LETTER CIRCUMFLEX ACCENT
-    u"\x89": u"\u2030", # PER MILLE SIGN
-    u"\x8A": u"\u0160", # LATIN CAPITAL LETTER S WITH CARON
-    u"\x8B": u"\u2039", # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
-    u"\x8C": u"\u0152", # LATIN CAPITAL LIGATURE OE
-    u"\x8E": u"\u017D", # LATIN CAPITAL LETTER Z WITH CARON
-    u"\x91": u"\u2018", # LEFT SINGLE QUOTATION MARK
-    u"\x92": u"\u2019", # RIGHT SINGLE QUOTATION MARK
-    u"\x93": u"\u201C", # LEFT DOUBLE QUOTATION MARK
-    u"\x94": u"\u201D", # RIGHT DOUBLE QUOTATION MARK
-    u"\x95": u"\u2022", # BULLET
-    u"\x96": u"\u2013", # EN DASH
-    u"\x97": u"\u2014", # EM DASH
-    u"\x98": u"\u02DC", # SMALL TILDE
-    u"\x99": u"\u2122", # TRADE MARK SIGN
-    u"\x9A": u"\u0161", # LATIN SMALL LETTER S WITH CARON
-    u"\x9B": u"\u203A", # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
-    u"\x9C": u"\u0153", # LATIN SMALL LIGATURE OE
-    u"\x9E": u"\u017E", # LATIN SMALL LETTER Z WITH CARON
-    u"\x9F": u"\u0178", # LATIN CAPITAL LETTER Y WITH DIAERESIS
+    "\x80": "\u20AC",  # EURO SIGN
+    "\x82": "\u201A",  # SINGLE LOW-9 QUOTATION MARK
+    "\x83": "\u0192",  # LATIN SMALL LETTER F WITH HOOK
+    "\x84": "\u201E",  # DOUBLE LOW-9 QUOTATION MARK
+    "\x85": "\u2026",  # HORIZONTAL ELLIPSIS
+    "\x86": "\u2020",  # DAGGER
+    "\x87": "\u2021",  # DOUBLE DAGGER
+    "\x88": "\u02C6",  # MODIFIER LETTER CIRCUMFLEX ACCENT
+    "\x89": "\u2030",  # PER MILLE SIGN
+    "\x8A": "\u0160",  # LATIN CAPITAL LETTER S WITH CARON
+    "\x8B": "\u2039",  # SINGLE LEFT-POINTING ANGLE QUOTATION MARK
+    "\x8C": "\u0152",  # LATIN CAPITAL LIGATURE OE
+    "\x8E": "\u017D",  # LATIN CAPITAL LETTER Z WITH CARON
+    "\x91": "\u2018",  # LEFT SINGLE QUOTATION MARK
+    "\x92": "\u2019",  # RIGHT SINGLE QUOTATION MARK
+    "\x93": "\u201C",  # LEFT DOUBLE QUOTATION MARK
+    "\x94": "\u201D",  # RIGHT DOUBLE QUOTATION MARK
+    "\x95": "\u2022",  # BULLET
+    "\x96": "\u2013",  # EN DASH
+    "\x97": "\u2014",  # EM DASH
+    "\x98": "\u02DC",  # SMALL TILDE
+    "\x99": "\u2122",  # TRADE MARK SIGN
+    "\x9A": "\u0161",  # LATIN SMALL LETTER S WITH CARON
+    "\x9B": "\u203A",  # SINGLE RIGHT-POINTING ANGLE QUOTATION MARK
+    "\x9C": "\u0153",  # LATIN SMALL LIGATURE OE
+    "\x9E": "\u017E",  # LATIN SMALL LETTER Z WITH CARON
+    "\x9F": "\u0178",  # LATIN CAPITAL LETTER Y WITH DIAERESIS
 }
+
 
 def fix_cp1252codes(text):
     # map cp1252 gremlins to real unicode characters
-    if re.search(u"[\x80-\x9f]", text):
+    if re.search("[\x80-\x9f]", text):
+
         def fixup(m):
             s = m.group(0)
             return cp1252.get(s, s)
+
         if isinstance(text, type("")):
             # make sure we have a unicode string
-            text = unicode(text, "iso-8859-1")
-        text = re.sub(u"[\x80-\x9f]", fixup, text)
+            text = str(text, "iso-8859-1")
+        text = re.sub("[\x80-\x9f]", fixup, text)
     return text
 
+
 def clean_utf8(text):
-    return filter(lambda x : x > '\x1f' and x < '\x7f', text)
+    return [x for x in text if x > "\x1f" and x < "\x7f"]
+
 
 def pairs(iterable, overlapping=False):
     iterator = iterable.__iter__()
-    token = iterator.next()
+    token = next(iterator)
     i = 0
     for lookahead in iterator:
-        if overlapping or i % 2 == 0: 
+        if overlapping or i % 2 == 0:
             yield (token, lookahead)
         token = lookahead
         i += 1
     if i % 2 == 0:
         yield (token, None)
+
 
 def frange(start, end=None, inc=None):
     "A range function, that does accept float increments..."
@@ -179,13 +193,14 @@ def frange(start, end=None, inc=None):
         elif inc < 0 and next <= end:
             break
         L.append(next)
-        
+
     return L
+
 
 def softmax(values):
     a = max(values)
     Z = 0.0
     for v in values:
         Z += math.exp(v - a)
-    sm = [math.exp(v-a) / Z for v in values]
+    sm = [math.exp(v - a) / Z for v in values]
     return sm

@@ -1,8 +1,7 @@
-**************************************************************************************************
-**THIS IS A DEVELOPMENTAL REPOSITORY FOR M2Scorer**   
-**FOR AN OFFICIAL VERSION (VERSION 3.2), visit http://www.comp.nus.edu.sg/~nlp/conll14st.html**  
-**OR CHECK OUT THE RELEASES: https://github.com/nusnlp/m2scorer/releases**  
-****************************************************************************************************
+To install this version of the m2scorer, use the following command
+```
+pip install https://github.com/outwrite/m2scorer.git
+```
 
 ## M^2Scorer 
 
@@ -46,7 +45,7 @@ SOURCE_GOLD = the source sentences with gold edits.
 ### Pre-requisites
 The following dependencies have to be installed to use the M^2 scorer.
 
-* Python (>= 2.6.4, < 3.0, older versions might work but are not tested)
+* Python (>= 2.6.4, <= 3.7, older and newer versions might work but are not tested)
 * nltk (http://www.nltk.org, needed for sentence splitting) 
 
 
@@ -64,6 +63,7 @@ OPTIONS
   --max_unchanged_words N     -  Maximum unchanged words when extracting edits. Default = 2.
   --ignore_whitespace_casing  -  Ignore edits that only affect whitespace and casing. Default no.
   --beta                      -  Set the ratio of recall importance against precision. Default = 0.5.
+  --timeout                   -  Max number of seconds per sample
 
 ```
 #### 2.1 System output format
