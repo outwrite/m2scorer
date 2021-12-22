@@ -32,6 +32,7 @@
 
 from __future__ import print_function
 import sys
+import levenshtein
 from getopt import getopt
 from m2scorer.util import paragraphs, smart_open
 
