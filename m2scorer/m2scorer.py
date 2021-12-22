@@ -32,7 +32,7 @@
 
 from __future__ import print_function
 import sys
-from levenshtein import batch_multi_pre_rec_f1
+from m2scorer.levenshtein import batch_multi_pre_rec_f1
 from getopt import getopt
 from m2scorer.util import paragraphs, smart_open
 
