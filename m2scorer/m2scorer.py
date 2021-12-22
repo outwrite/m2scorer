@@ -32,7 +32,7 @@
 
 from __future__ import print_function
 import sys
-import levenshtein
+from levenshtein import batch_multi_pre_rec_f1
 from getopt import getopt
 from m2scorer.util import paragraphs, smart_open
 
@@ -146,7 +146,7 @@ def main(
     # fin.close()
     # system_output
 
-    p, r, f = levenshtein.batch_multi_pre_rec_f1(
+    p, r, f = batch_multi_pre_rec_f1(
         system_output,
         source_sentences,
         gold_edits,
